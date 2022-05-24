@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Federation {
+  id          Int       @id @default(autoincrement())
+  tradeName   String    @db.VarChar(255)
+  companyName String    @db.VarChar(255)
+  taxId       String    @db.VarChar(20)
+  email       String?   @db.VarChar(255)
+  president   String    @db.VarChar(255)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  Athlete     Athlete[]
+}
+
+model Athlete {
+  id           Int        @id @default(autoincrement())
+  code         String?    @db.VarChar(40)
+  name         String     @db.VarChar(255)
+  rg           String?    @db.VarChar(20)
+  taxId        String?    @db.VarChar(14)
+  sex          String     @db.VarChar(1)
+  email        String?    @db.VarChar(255)
+  birthDate    DateTime
+  facebook     String?    @db.VarChar(255)
+  phone        String?    @db.VarChar(40)
+  cellphone    String?    @db.VarChar(40)
+  federation   Federation @relation(fields: [federationId], references: [id])
+  federationId Int
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}

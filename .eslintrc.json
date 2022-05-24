@@ -1,3 +1,110 @@
 {
-  "extends": "next/core-web-vitals"
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "globals": {
+    "React": true
+  },
+  "extends": [
+    "next/core-web-vitals",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended",
+    "plugin:jsx-a11y/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "plugins": [
+    "react",
+    "prettier",
+    "react-hooks",
+    "import",
+    "jest",
+    "eslint-plugin-import-helpers"
+  ],
+  "rules": {
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-inferrable-types": 1,
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
+    ],
+    "@typescript-eslint/naming-convention": [
+      "warn",
+      {
+        "selector": "interface",
+        "format": ["PascalCase"],
+        "custom": { "regex": "(Props)$", "match": true }
+      }
+    ],
+    "@typescript-eslint/no-explicit-any": "off",
+		"@typescript-eslint/no-var-requires": "off",
+    "react/display-name": "off",
+		"implicit-arrow-linebreak": "off",
+		"no-prototype-builtins": "off",
+		"import/no-unresolved": "off",
+    "import/export": "off",
+		"indent": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": ["warn", {
+      "additionalHooks": "(useDebounceEffect|useUpdateEffect)"
+    }],
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off",
+    "react/jsx-filename-extension": [
+      1,
+      { "extensions": [".js", ".jsx", ".tsx"] }
+    ],
+    "react/self-closing-comp": [
+      "warn",
+      {
+        "component": true,
+        "html": true
+      }
+    ],
+    "no-console": ["error", { "allow": ["warn", "error"] }],
+    "prettier/prettier": "error",
+    "quotes": ["warn", "single"],
+    "semi": "warn",
+    "no-shadow": "off",
+    "no-multi-assign": "off",
+    "no-restricted-syntax": "off",
+    "max-len": ["error", { "code": 130, "tabWidth": 2 }],
+    "max-lines": ["error", { "max": 350, "skipComments": true }],
+    "brace-style": [2, "1tbs", { "allowSingleLine": true }],
+    "arrow-body-style": ["error", "as-needed"],
+    "arrow-parens": ["error", "always"],
+    "arrow-spacing": "error",
+    "no-confusing-arrow": "error",
+    "import/default": "off",
+    "import/order": "off",
+    "import-helpers/order-imports": [
+      "warn",
+      {
+        "newlinesBetween": "always",
+        "groups": ["/^react$/", "/^react-/", "module", "/^@assets/", "/^~/", ["parent", "sibling", "index"]],
+        "alphabetize": { "order": "asc", "ignoreCase": false }
+      }
+    ],
+    "padding-line-between-statements": [
+      "warn",
+      { "blankLine": "always", "prev": "*", "next": "return" },
+      { "blankLine": "any", "prev": "directive", "next": "directive" },
+      { "blankLine": "always", "prev": ["const", "let", "var"], "next": "*" },
+      {
+        "blankLine": "any",
+        "prev": ["const", "let", "var"],
+        "next": ["const", "let", "var"]
+      }
+    ]
+  }
 }

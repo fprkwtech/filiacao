@@ -1,0 +1,33 @@
+{
+  "editor.formatOnSave": true,
+  "editor.rulers": [130],
+  "editor.wordWrapColumn": 130,
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.renderLineHighlight": "gutter",
+  "workbench.iconTheme": "material-icon-theme",
+  "extensions.ignoreRecommendations": false,
+  "javascript.updateImportsOnFileMove.enabled": "never",
+  "typescript.updateImportsOnFileMove.enabled": "never",
+  "files.associations": {
+    "*.tsx": "typescriptreact",
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.fixAll.tslint": true,
+    "source.fixAll.stylelint": true
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.inlineSuggest.enabled": true,
+  "prettier.printWidth": 130,
+  "editor.minimap.maxColumn": 130,
+  "html.format.wrapLineLength": 130,
+  "totvsLanguageServer.welcomePage": false,
+  "totvsLanguageServer.editor.toggle.autocomplete": "Basic"
+}
