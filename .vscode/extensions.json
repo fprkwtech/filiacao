@@ -1,0 +1,22 @@
+{
+  "recommendations": [
+    "EditorConfig.EditorConfig",
+    "esbenp.prettier-vscode",
+    "vitaliymaz.vscode-svg-previewer",
+    "dbaeumer.vscode-eslint",
+    "formulahendry.auto-rename-tag",
+    "GitHub.copilot",
+    "GitHub.vscode-pull-request-github",
+    "naumovs.color-highlight",
+    "ms-azuretools.vscode-docker",
+    "paragdiwan.gitpatch",
+    "eamodio.gitlens",
+    "wix.vscode-import-cost",
+    "VisualStudioExptTeam.vscodeintellicode",
+    "Meezilla.json",
+    "ms-vsliveshare.vsliveshare-pack",
+    "PKief.material-icon-theme",
+    "sainoba.px-to-rem",
+    "Prisma.prisma"
+  ]
+}
