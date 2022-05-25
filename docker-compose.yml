@@ -1,0 +1,15 @@
+# Docket- Postgres
+version: "3.1"
+
+services:
+
+  db:
+    container_name: database
+    image: postgres:14-alpine
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: topicos
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
