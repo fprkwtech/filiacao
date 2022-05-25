@@ -6,11 +6,17 @@ Sistema de Filiação de Escolas, Atletas e Professores
 
 ## Getting Started
 
-First, run the development server:
+First, rum the container:
 
 ```bash
-npm run dev
-# or
+docker-compose up -d
+
+yarn prisma migrate dev
+```
+
+Second, run the development server:
+
+```bash
 yarn dev
 ```
 
