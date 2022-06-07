@@ -158,6 +158,7 @@ model Address {
   zipcode    String        @db.VarChar(8)
   street     String        @db.VarChar(255)
   number     String?       @db.VarChar(45)
+  complement String?       @db.VarChar(255)
   district   String        @db.VarChar(255)
   city       String        @db.VarChar(255)
   state      String        @db.VarChar(2)

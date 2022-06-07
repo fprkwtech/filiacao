@@ -28,6 +28,4 @@
   "prettier.printWidth": 130,
   "editor.minimap.maxColumn": 130,
   "html.format.wrapLineLength": 130,
-  "totvsLanguageServer.welcomePage": false,
-  "totvsLanguageServer.editor.toggle.autocomplete": "Basic"
 }
