@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { PDFDownloadLink } from '@react-pdf/renderer';
+import { BlobProvider, PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 
 import Carteirinha from '~/components/Carteirinha';
 
@@ -18,9 +18,20 @@ const Emissao = () => {
       */}
       <Carteirinha />
       {isClient && (
-        <PDFDownloadLink document={<Carteirinha />} fileName="resume.pdf">
-          <h1>Clique aqui para baixar o pdf</h1>
-        </PDFDownloadLink>
+        <PDFDownloadLink
+          document={<Carteirinha />}
+          fileName="resume.pdf"
+          // eslint-disable-next-line react/no-children-prop
+          children={({ blob, loading, url, error }) => {
+            if (!loading) {
+              return (
+                <a href={url} target="_blank" rel="noreferrer">
+                  Clique aqui
+                </a>
+              );
+            }
+          }}
+        />
       )}
     </>
   );
