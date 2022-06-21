@@ -28,4 +28,5 @@
   "prettier.printWidth": 130,
   "editor.minimap.maxColumn": 130,
   "html.format.wrapLineLength": 130,
+  "WillLuke.nextjs.hasPrompted": true,
 }

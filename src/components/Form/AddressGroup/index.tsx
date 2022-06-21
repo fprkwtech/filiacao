@@ -95,12 +95,16 @@ const AddressGroup: React.ComponentType<AddressGroupProps> = ({ prefixName }) =>
 
 export const yupSchema: any = (prefixName: string) => {
   const schema = yup.object({
-    [`${prefixName}ZipCode`]: yup.string().required(),
-    [`${prefixName}Street`]: yup.string().required('Rua é obrigatória'),
+    [`${prefixName}ZipCode`]: yup
+      .string()
+      .required('O CEP é obrigatório!')
+      .min(8, 'O CEP deve conter exatamente 8')
+      .max(9, 'O CEP deve conter exatamente 8'),
+    [`${prefixName}Street`]: yup.string().required('Rua é obrigatória!'),
     [`${prefixName}Number`]: yup.string(),
     [`${prefixName}Complement`]: yup.string(),
-    [`${prefixName}District`]: yup.string().required(),
-    [`${prefixName}City`]: yup.string().required(),
+    [`${prefixName}District`]: yup.string().required('Bairro é obrigatório!'),
+    [`${prefixName}City`]: yup.string().required('Cidade é obrigatória!'),
     [`${prefixName}State`]: yup
       .string()
       .oneOf(statesOptions.map(({ value }) => value))

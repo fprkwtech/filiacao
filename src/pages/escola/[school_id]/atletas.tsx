@@ -18,16 +18,16 @@ export interface AthleteProps {
 
 const schema = yup
   .object({
-    athleteName: yup.string().required(),
-    athleteTaxId: yup.string().required(),
-    athleteRg: yup.string().required(),
-    athleteBirthDate: yup.string().required(),
-    athleteSex: yup.string().required(),
-    legalGuardianName: yup.string().required(),
-    legalGuardianTaxId: yup.string().required(),
-    legalGuardianRg: yup.string().required(),
-    legalGuardianBirthDate: yup.string().required(),
-    legalGuardianRelationship: yup.string().required(),
+    athleteName: yup.string().required('Nome obrigatório!'),
+    athleteTaxId: yup.string().required('CPF obrigatório!'),
+    athleteRg: yup.string().required('RG obrigatório!'),
+    athleteBirthDate: yup.string().required('Data de nascimento obrigatória!'),
+    athleteSex: yup.string().required('Sexo obrigatório!'),
+    legalGuardianName: yup.string().required('Nome obrigatório!'),
+    legalGuardianTaxId: yup.string().required('CPF obrigatório!'),
+    legalGuardianRg: yup.string().required('RG obrigatório!'),
+    legalGuardianBirthDate: yup.string().required('Data de nascimento obrigatória!'),
+    legalGuardianRelationship: yup.string().required('Grau de parentesco obrigatório!'),
   })
   .concat(yupSchema('athleteAddress'))
   .concat(yupSchema('legalGuardianAddress'))
@@ -67,7 +67,7 @@ const Athletes = () => {
           <Flex gap="4" padding="4">
             <TextField label="Nome completo" name="athleteName" required />
             <TextField label="CPF" name="athleteTaxId" required />
-            <TextField label="RG" name="athleteRg" required />
+            <TextField label="RG" width="50px" name="athleteRg" required />
             <TextField label="Data de Nascimento" name="athleteBirthDate" required />
             <RadioGroup label="Sexo" name="athleteSex" direction="column" options={sexOptions} required />
           </Flex>
