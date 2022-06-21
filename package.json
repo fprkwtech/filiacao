@@ -9,6 +9,9 @@
     "lint": "next lint",
     "test": "jest --watch"
   },
+  "browser": {
+    "html-pdf": false
+  },
   "dependencies": {
     "@chakra-ui/react": "^2.1.0",
     "@emotion/react": "^11",
@@ -17,6 +20,7 @@
     "@prisma/client": "3.14.0",
     "@react-pdf/renderer": "^2.2.0",
     "framer-motion": "^6",
+    "html-pdf": "^2.2.0",
     "next": "12.1.6",
     "react": "18.1.0",
     "react-dom": "18.1.0",
@@ -28,6 +32,7 @@
     "@testing-library/dom": "^8.13.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.2.0",
+    "@types/html-pdf": "^3.0.0",
     "@types/node": "^17.0.35",
     "@types/react": "18.0.9",
     "@types/react-dom": "18.0.4",
