@@ -1,45 +1,66 @@
-import { Image } from '@chakra-ui/react';
+import { Box, Flex, Heading, Image, Text } from '@chakra-ui/react';
+
+import classes from './styles';
 
 export interface AlvaraProps {
   host: string;
+  nome: string;
+  rg: string;
+  estilos: string;
+  cidade: string;
+  data: string;
+  validade: string;
 }
 
-const Alvara: React.FunctionComponent<AlvaraProps> = ({ host }) => (
-  <div className="container">
-    <div className="miolo">
-      <div>{/* <img src="static/images/logo.png" width="275px" /> */}</div>
-      <h1 className="alvara">ALVARÁ</h1>
-      <p>
-        O presidente da federação paranaense de kung fu wushu (FPRKW) no uso dos
-        <br /> atributos que lhe conferem autoriza o SR(A) <b> nome_professor </b>,<br /> portador do RG rg SSP/SP, a ministrar
-        aulas de Kung Fu / wushu
-        <br /> nos estilos estilos .
-      </p>
-      <div className="flex-container">
-        <span>
-          <div style={{ width: '200px' }} />
-        </span>
-        <span>
-          <div className="div-assinatura">
-            <b>cidade, data de mes de ano</b>
+const Alvara: React.FunctionComponent<AlvaraProps> = ({ host, nome, rg, estilos, cidade, data, validade }) => (
+  <Box
+    width="740px"
+    height="470px"
+    padding="45px"
+    bgColor="rgb(242, 243, 230)"
+    backgroundImage={`http://${host}/borda-alvara.png`}
+    bgRepeat="no-repeat"
+    bgSize="contain"
+    bgPosition="center"
+  >
+    <Flex direction="column" alignItems="center" className="miolo">
+      <Box margin="0">
+        <Image src={`http://${host}/logo.png`} width="150px" alt="logo" />
+      </Box>
+      <Heading margin="0" padding="15px 0" as="h1" fontSize="45px" fontWeight="400">
+        ALVARÁ
+      </Heading>
+      <Text width="full" textAlign="center" margin="0 35px" fontSize="20px">
+        O presidente da federação paranaense de kung fu wushu (FPRKW) no uso dos atributos que lhe conferem autoriza o SR(A){' '}
+        <b> {nome} </b>, portador do RG {rg} SSP/SP, a ministrar aulas de Kung Fu / wushu nos estilos estilos {estilos}.
+      </Text>
+      <Flex justifyContent="space-between" alignItems="flex-end">
+        <Box>
+          <Box style={{ width: '90px' }} />
+        </Box>
+        <Box>
+          <Box className="div-assinatura">
+            <b>
+              {cidade}, {data}
+            </b>
             <br />
-            <b>validade de (variavel_ ano)</b>
-          </div>
+            <b>validade de {validade}</b>
+          </Box>
 
-          <div>__________________________</div>
-          <div style={{ padding: '25px' }}>
+          <Box>__________________________</Box>
+          <Box style={{ padding: '25px' }}>
             <b> Aldebran Valentim </b>
             <br />
             Presidente da Federação Paranaense de <br />
             Kung Fu Wushu
-          </div>
-        </span>
-        <span>
-          <Image src={`${host}/www.png`} width="200px" alt="Landscape picture" />
-        </span>
-      </div>
-    </div>
-  </div>
+          </Box>
+        </Box>
+        <Box>
+          <Image src={`http://${host}/www.png`} width="90px" alt="Landscape picture" />
+        </Box>
+      </Flex>
+    </Flex>
+  </Box>
 );
 
 export default Alvara;

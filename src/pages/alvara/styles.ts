@@ -28,13 +28,6 @@ const classes = {
     textAlign: 'center',
   },
 
-  alvara: {
-    margin: 0,
-    fontSize: 100,
-    fontFamily: 'serif',
-    fontWeight: 400,
-  },
-
   container: {
     width: 1440,
     backgroundColor: '#f1e9be',
