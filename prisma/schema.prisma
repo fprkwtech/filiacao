@@ -10,32 +10,253 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model LegalGuardian {
+  id           Int       @id @default(autoincrement())
+  name         String    @db.VarChar(255)
+  relationship String    @db.VarChar(45)
+  taxId        String    @db.VarChar(11)
+  rg           String    @db.VarChar(45)
+  birthDate    DateTime  @db.Date
+  email        String    @db.VarChar(45)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  athletes     Athlete[]
+}
+
 model Federation {
-  id          Int       @id @default(autoincrement())
-  tradeName   String    @db.VarChar(255)
-  companyName String    @db.VarChar(255)
-  taxId       String    @db.VarChar(20)
-  email       String?   @db.VarChar(255)
-  president   String    @db.VarChar(255)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  Athlete     Athlete[]
+  id          Int        @id @default(autoincrement())
+  tradeName   String     @db.VarChar(255)
+  companyName String     @db.VarChar(255)
+  taxId       String     @db.VarChar(14)
+  email       String?    @db.VarChar(255)
+  president   String     @db.VarChar(255)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  athletes    Athlete[]
+  schools     School[]
+  teachers    Teacher[]
+  Metadatas   Metadata[]
+  address     Address[]  @relation("FederationAddress")
 }
 
 model Athlete {
+  id                 Int                  @id @default(autoincrement())
+  code               String?              @db.VarChar(45)
+  name               String               @db.VarChar(255)
+  rg                 String?              @db.VarChar(45)
+  taxId              String?              @db.VarChar(11)
+  sex                Sex
+  email              String?              @db.VarChar(255)
+  birthDate          DateTime             @db.Date
+  facebook           String?              @db.VarChar(45)
+  phone              String?              @db.VarChar(45)
+  cellphone          String?              @db.VarChar(45)
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  federation         Federation           @relation(fields: [federationId], references: [id])
+  federationId       Int
+  legalGuardian      LegalGuardian?       @relation(fields: [legalGuardianId], references: [id])
+  legalGuardianId    Int?
+  teacherAthletes    TeacherAthlete[]
+  documents          Document[]           @relation("AthleteDocument")
+  address            Address[]            @relation("AthleteAddress")
+  schoolAthletes     SchoolAthlete[]
+  validateHistories  ValidateHistory[]    @relation("AthleteValidateHistory")
+  fightStyleRelation FightStyleRelation[] @relation("AthleteFightStyleRelation")
+}
+
+model School {
+  id                 Int                  @id @default(autoincrement())
+  companyName        String               @db.VarChar(45)
+  tradeName          String?              @db.VarChar(45)
+  taxId              String               @db.VarChar(14)
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  federation         Federation           @relation(fields: [federationId], references: [id])
+  federationId       Int
+  schoolTeachers     SchoolTeacher[]
+  schoolAthletes     SchoolAthlete[]
+  validateHistory    ValidateHistory[]    @relation("SchoolValidateHistory")
+  fightStyleRelation FightStyleRelation[] @relation("SchoolFightStyleRelation")
+  address            Address[]            @relation("SchoolAddress")
+  documents          Document[]           @relation("SchoolDocument")
+}
+
+model Teacher {
+  id                 Int                  @id @default(autoincrement())
+  code               String?              @db.VarChar(45)
+  name               String               @db.VarChar(255)
+  rg                 String               @db.VarChar(45)
+  issuingAgency      String               @db.VarChar(45)
+  taxId              String               @db.VarChar(11)
+  sex                Sex
+  email              String               @db.VarChar(255)
+  birthDate          DateTime             @db.Date
+  facebook           String?              @db.VarChar(45)
+  phone              String?              @db.VarChar(45)
+  cellphone          String               @db.VarChar(45)
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  federation         Federation           @relation(fields: [federationId], references: [id])
+  federationId       Int
+  teacherAthletes    TeacherAthlete[]
+  schoolTeachers     SchoolTeacher[]
+  validateHistory    ValidateHistory[]    @relation("TeacherValidateHistory")
+  fightStyleRelation FightStyleRelation[] @relation("TeacherFightStyleRelation")
+  address            Address[]            @relation("TeacherAddress")
+  documents          Document[]           @relation("TeacherDocument")
+}
+
+model TeacherAthlete {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  teacher   Teacher  @relation(fields: [teacherId], references: [id])
+  teacherId Int
+  athlete   Athlete  @relation(fields: [athleteId], references: [id])
+  athleteId Int
+}
+
+model SchoolTeacher {
+  id        Int      @id @default(autoincrement())
+  owner     Boolean?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  school    School   @relation(fields: [schoolId], references: [id])
+  schoolId  Int
+  teacher   Teacher  @relation(fields: [teacherId], references: [id])
+  teacherId Int
+
+  @@unique([schoolId, owner])
+}
+
+model FightStyle {
+  id                  Int                  @id @default(autoincrement())
+  name                String               @db.VarChar(45)
+  category            String               @db.VarChar(45)
+  region              String               @db.VarChar(45)
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  fightStyleRelations FightStyleRelation[]
+}
+
+model Document {
+  id         Int          @id @default(autoincrement())
+  type       DocumentType
+  content    Bytes        @db.ByteA
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  athlete    Athlete?     @relation("AthleteDocument", fields: [sourceId], references: [id], map: "AthleteDocument_sourceId_fkey")
+  teacher    Teacher?     @relation("TeacherDocument", fields: [sourceId], references: [id], map: "TeacherDocument_sourceId_fkey")
+  school     School?      @relation("SchoolDocument", fields: [sourceId], references: [id], map: "SchoolDocument_sourceId_fkey")
+  sourceId   Int
+  sourceType String       @db.VarChar(45)
+}
+
+model Address {
+  id         Int           @id @default(autoincrement())
+  zipcode    String        @db.VarChar(8)
+  street     String        @db.VarChar(255)
+  number     String?       @db.VarChar(45)
+  complement String?       @db.VarChar(255)
+  district   String        @db.VarChar(255)
+  city       String        @db.VarChar(255)
+  state      String        @db.VarChar(2)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  athlete    Athlete?      @relation("AthleteAddress", fields: [sourceId], references: [id], map: "AthleteAddress_sourceId_fkey")
+  teacher    Teacher?      @relation("TeacherAddress", fields: [sourceId], references: [id], map: "TeacherAddress_sourceId_fkey")
+  school     School?       @relation("SchoolAddress", fields: [sourceId], references: [id], map: "SchoolAddress_sourceId_fkey")
+  federation Federation?   @relation("FederationAddress", fields: [sourceId], references: [id], map: "FederationAddress_sourceId_fkey")
+  sourceId   Int           @unique
+  sourceType AddressSource
+}
+
+model Metadata {
   id           Int        @id @default(autoincrement())
-  code         String?    @db.VarChar(40)
-  name         String     @db.VarChar(255)
-  rg           String?    @db.VarChar(20)
-  taxId        String?    @db.VarChar(14)
-  sex          String     @db.VarChar(1)
-  email        String?    @db.VarChar(255)
-  birthDate    DateTime
-  facebook     String?    @db.VarChar(255)
-  phone        String?    @db.VarChar(40)
-  cellphone    String?    @db.VarChar(40)
-  federation   Federation @relation(fields: [federationId], references: [id])
-  federationId Int
+  key          String     @db.VarChar(45)
+  value        String
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
+  federation   Federation @relation(fields: [federationId], references: [id])
+  federationId Int
+}
+
+model SchoolAthlete {
+  id        Int      @id @default(autoincrement())
+  main      Boolean?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  school    School   @relation(fields: [schoolId], references: [id])
+  schoolId  Int
+  athlete   Athlete  @relation(fields: [athleteId], references: [id])
+  athleteId Int
+
+  @@unique([athleteId, main])
+}
+
+model FightStyleRelation {
+  id           Int                      @id @default(autoincrement())
+  main         Boolean?
+  createdAt    DateTime                 @default(now())
+  updatedAt    DateTime                 @updatedAt
+  fightStyle   FightStyle               @relation(fields: [fightStyleId], references: [id])
+  fightStyleId Int
+  school       School?                  @relation("SchoolFightStyleRelation", fields: [sourceId], references: [id], map: "SchoolFightStyleRelation_sourceId_fkey")
+  teacher      Teacher?                 @relation("TeacherFightStyleRelation", fields: [sourceId], references: [id], map: "TeacherFightStyleRelation_sourceId_fkey")
+  athlete      Athlete?                 @relation("AthleteFightStyleRelation", fields: [sourceId], references: [id], map: "AthleteFightStyleRelation_sourceId_fkey")
+  sourceId     Int
+  sourceType   FightStyleRelationSource
+
+  @@unique([main, sourceId])
+}
+
+model ValidateHistory {
+  id         Int                   @id @default(autoincrement())
+  dueDate    DateTime              @db.Date
+  createdAt  DateTime              @default(now())
+  updatedAt  DateTime              @updatedAt
+  athlete    Athlete?              @relation("AthleteValidateHistory", fields: [sourceId], references: [id], map: "AthleteValidateHistory_sourceId_fkey")
+  teacher    Teacher?              @relation("TeacherValidateHistory", fields: [sourceId], references: [id], map: "TeacherValidateHistory_sourceId_fkey")
+  school     School?               @relation("SchoolValidateHistory", fields: [sourceId], references: [id], map: "SchoolValidateHistory_sourceId_fkey")
+  sourceId   Int
+  sourceType ValidateHistorySource
+}
+
+enum DocumentSource {
+  Athlete
+  Teacher
+  School
+}
+
+enum AddressSource {
+  Athlete
+  School
+  Teacher
+  Federation
+}
+
+enum FightStyleRelationSource {
+  Athlete
+  School
+  Teacher
+}
+
+enum ValidateHistorySource {
+  Athlete
+  School
+  Teacher
+}
+
+enum DocumentType {
+  FOTO
+  RG
+  CPF
+  COMPROVANTE_RESIDENCIA
+  ALVARA
+}
+
+enum Sex {
+  M
+  F
 }
