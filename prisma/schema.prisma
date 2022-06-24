@@ -253,6 +253,7 @@ enum DocumentType {
   RG
   CPF
   COMPROVANTE_RESIDENCIA
+  ALVARA
 }
 
 enum Sex {
