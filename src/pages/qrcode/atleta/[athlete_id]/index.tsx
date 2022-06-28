@@ -43,51 +43,54 @@ export interface GuardianProps {
 }
 
 export interface Props {
-  atlete?: AthleteProps;
+  athlete?: AthleteProps;
   guardian?: GuardianProps;
 }
 
-export async function getServerSideProps(query: { params: { athlete_id: string } }) {
-  // console.log(query.params.athlete_id);
-  const atlete = await prisma.athlete.findFirst({
-    where: { id: +query.params.athlete_id },
-    include: { address: true, legalGuardian: true },
-  });
+export async function getServerSideProps({ params }: { params: { athlete_id?: string } }) {
+  if (params.athlete_id && !isNaN(+params.athlete_id)) {
+    const athlete = await prisma.athlete.findFirst({
+      where: { id: +params.athlete_id },
+      include: { address: true, legalGuardian: true },
+    });
 
-  if (atlete)
-    return {
-      props: {
-        atlete: {
-          athleteName: atlete?.name,
-          athleteRg: atlete?.rg,
-          athleteTaxId: atlete?.taxId,
-          athleteBirthDate: atlete?.birthDate.toLocaleDateString('pt-BR'),
-          athleteSex: atlete ? (atlete.sex === 'M' ? 'Masculino' : 'Feminino') : undefined,
-          athleteGuardianId: atlete?.legalGuardianId,
-          athleteAddresses: atlete?.address,
+    if (athlete)
+      return {
+        props: {
+          athlete: {
+            athleteName: athlete?.name,
+            athleteRg: athlete?.rg,
+            athleteTaxId: athlete?.taxId,
+            athleteBirthDate: athlete?.birthDate.toLocaleDateString('pt-BR'),
+            athleteSex: athlete ? (athlete.sex === 'M' ? 'Masculino' : 'Feminino') : undefined,
+            athleteGuardianId: athlete?.legalGuardianId,
+            athleteAddresses: athlete?.address,
+          },
+          guardian: {
+            guardianName: athlete?.legalGuardian?.name,
+            guardianTaxId: athlete?.legalGuardian?.taxId,
+            guardianRg: athlete?.legalGuardian?.rg,
+            guardianBirthDate: athlete?.legalGuardian?.birthDate.toLocaleDateString('pt-BR'),
+            guardianRelationship: athlete?.legalGuardian?.relationship,
+            // TODO esperar os endereços do guardiao
+            guardianAddresses: null,
+          },
         },
-        guardian: {
-          guardianName: atlete?.legalGuardian?.name,
-          guardianTaxId: atlete?.legalGuardian?.taxId,
-          guardianRg: atlete?.legalGuardian?.rg,
-          guardianBirthDate: atlete?.legalGuardian?.birthDate.toLocaleDateString('pt-BR'),
-          guardianRelationship: atlete?.legalGuardian?.relationship,
-          // TODO esperar os endereços do guardiao
-          guardianAddresses: null,
-        },
-      },
-    };
+      };
+
+    return { props: {} };
+  }
 
   return { props: {} };
 }
 
-const Athletes = ({ atlete, guardian }: Props) => {
+const Athletes = ({ athlete, guardian }: Props) => {
   const { control } = useForm();
 
   return (
     <Container maxWidth="container.lg">
       <Logo />
-      {atlete && guardian ? (
+      {athlete && guardian ? (
         <Flex direction="column" gap="4" bg="white" borderRadius="8">
           <Text textAlign="center" marginTop={'5px'} fontSize="2xl">
             Atleta
@@ -98,22 +101,22 @@ const Athletes = ({ atlete, guardian }: Props) => {
               label="Nome completo"
               name="athleteName"
               isReadOnly={true}
-              placeholder={atlete.athleteName}
+              placeholder={athlete.athleteName}
             />
-            <TextField control={control} label="CPF" name="athleteTaxId" isReadOnly={true} placeholder={atlete.athleteTaxId} />
-            <TextField control={control} label="RG" name="athleteRg" isReadOnly={true} placeholder={atlete.athleteRg} />
+            <TextField control={control} label="CPF" name="athleteTaxId" isReadOnly={true} placeholder={athlete.athleteTaxId} />
+            <TextField control={control} label="RG" name="athleteRg" isReadOnly={true} placeholder={athlete.athleteRg} />
             <TextField
               control={control}
               label="Data de Nascimento"
               name="athleteBirthDate"
               isReadOnly={true}
-              placeholder={atlete.athleteBirthDate}
+              placeholder={athlete.athleteBirthDate}
             />
-            <TextField control={control} label="Sexo" name="athleteSex" isReadOnly={true} placeholder={atlete.athleteSex} />
+            <TextField control={control} label="Sexo" name="athleteSex" isReadOnly={true} placeholder={athlete.athleteSex} />
           </Flex>
           <Divider />
           <>
-            {atlete.athleteAddresses?.map((address) => {
+            {athlete.athleteAddresses?.map((address) => {
               <>
                 <Flex gap="4" padding="4">
                   <TextField control={control} label="CEP" name={'ZipCode'} isReadOnly={true} placeholder={address.zipcode} />
