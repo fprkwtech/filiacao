@@ -17,7 +17,8 @@
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@hookform/resolvers": "^2.8.10",
-    "@prisma/client": "3.14.0",
+    "@prisma/client": "^3.15.2",
+    "axios": "^0.27.2",
     "framer-motion": "^6",
     "html-pdf": "^2.2.0",
     "next": "12.1.6",
@@ -28,6 +29,7 @@
   },
   "devDependencies": {
     "@chakra-ui/cli": "^2.0.0",
+    "@faker-js/faker": "^7.3.0",
     "@testing-library/dom": "^8.13.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.2.0",
@@ -49,8 +51,10 @@
     "eslint-plugin-react-hooks": "^4.5.0",
     "jest": "^28.1.0",
     "jest-environment-jsdom": "^28.1.0",
+    "node-mocks-http": "^1.11.0",
     "prettier": "^2.6.2",
-    "prisma": "^3.14.0",
+    "prisma": "^3.15.2",
+    "prisma-factory": "^0.1.12",
     "ts-node": "^10.8.0",
     "typescript": "^4.7.2"
   }
