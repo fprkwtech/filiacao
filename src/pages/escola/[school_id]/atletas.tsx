@@ -3,6 +3,7 @@ import * as yup from 'yup';
 
 import Form from '~/components/Form';
 import AddressGroup, { yupSchema } from '~/components/Form/AddressGroup';
+import FileField from '~/components/Form/FileField';
 import RadioGroup, { RadioOptionProps } from '~/components/Form/RadioGroup';
 import Select, { SelectOptionProps } from '~/components/Form/Select';
 import TextField from '~/components/Form/TextField';
@@ -87,9 +88,16 @@ const Athletes = () => {
           <Flex gap="4" padding="4">
             <AddressGroup prefixName="legalGuardianAddress" />
           </Flex>
-          <Divider />
-          <Flex gap="4" padding="4" />
-          <Divider />
+          <Flex gap="4" padding="4" justifyContent="space-around">
+            <Flex gap="4" padding="4" direction="column">
+              <FileField label="Foto 3x4" name="files.FOT" required />
+              <FileField label="RG" name="files.RG" required />
+            </Flex>
+            <Flex gap="4" padding="4" direction="column">
+              <FileField label="CPF" name="files.CPF" required />
+              <FileField label="Comprovante de residência" name="files.COMPROVANTE_RESIDENCIA" required />
+            </Flex>
+          </Flex>
           <Flex gap="4" padding="4" justifyContent="center">
             <Button type="submit">Enviar</Button>
           </Flex>

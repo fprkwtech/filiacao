@@ -10,6 +10,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+generator factories {
+  provider = "prisma-factory"
+}
+
 model LegalGuardian {
   id           Int       @id @default(autoincrement())
   name         String    @db.VarChar(255)
@@ -36,7 +40,6 @@ model Federation {
   schools     School[]
   teachers    Teacher[]
   Metadatas   Metadata[]
-  address     Address[]  @relation("FederationAddress")
 }
 
 model Athlete {
@@ -59,7 +62,6 @@ model Athlete {
   legalGuardianId    Int?
   teacherAthletes    TeacherAthlete[]
   documents          Document[]           @relation("AthleteDocument")
-  address            Address[]            @relation("AthleteAddress")
   schoolAthletes     SchoolAthlete[]
   validateHistories  ValidateHistory[]    @relation("AthleteValidateHistory")
   fightStyleRelation FightStyleRelation[] @relation("AthleteFightStyleRelation")
@@ -78,7 +80,6 @@ model School {
   schoolAthletes     SchoolAthlete[]
   validateHistory    ValidateHistory[]    @relation("SchoolValidateHistory")
   fightStyleRelation FightStyleRelation[] @relation("SchoolFightStyleRelation")
-  address            Address[]            @relation("SchoolAddress")
   documents          Document[]           @relation("SchoolDocument")
 }
 
@@ -103,7 +104,6 @@ model Teacher {
   schoolTeachers     SchoolTeacher[]
   validateHistory    ValidateHistory[]    @relation("TeacherValidateHistory")
   fightStyleRelation FightStyleRelation[] @relation("TeacherFightStyleRelation")
-  address            Address[]            @relation("TeacherAddress")
   documents          Document[]           @relation("TeacherDocument")
 }
 
@@ -164,12 +164,10 @@ model Address {
   state      String        @db.VarChar(2)
   createdAt  DateTime      @default(now())
   updatedAt  DateTime      @updatedAt
-  athlete    Athlete?      @relation("AthleteAddress", fields: [sourceId], references: [id], map: "AthleteAddress_sourceId_fkey")
-  teacher    Teacher?      @relation("TeacherAddress", fields: [sourceId], references: [id], map: "TeacherAddress_sourceId_fkey")
-  school     School?       @relation("SchoolAddress", fields: [sourceId], references: [id], map: "SchoolAddress_sourceId_fkey")
-  federation Federation?   @relation("FederationAddress", fields: [sourceId], references: [id], map: "FederationAddress_sourceId_fkey")
-  sourceId   Int           @unique
+  sourceId   Int
   sourceType AddressSource
+
+  @@unique([sourceId, sourceType], name: "unique_sourceId_sourceType")
 }
 
 model Metadata {
@@ -253,6 +251,7 @@ enum DocumentType {
   RG
   CPF
   COMPROVANTE_RESIDENCIA
+  ALVARA
 }
 
 enum Sex {
