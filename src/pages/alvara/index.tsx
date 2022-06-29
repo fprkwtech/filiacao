@@ -1,7 +1,4 @@
 import { Box, Flex, Heading, Image, Text } from '@chakra-ui/react';
-
-import classes from './styles';
-
 export interface AlvaraProps {
   host: string;
   nome: string;
