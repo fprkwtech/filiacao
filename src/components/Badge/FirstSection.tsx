@@ -18,7 +18,7 @@ export default function FirstSection({ host }: FirstSectionProps) {
             CNPJ 02.147.454/0001-15
           </Text>
           <Text m="0" border="1px solid black" p="8px" borderRadius="5px" fontSize="12px">
-            PROFESSOR
+            ATLETA
           </Text>
         </VStack>
       </Flex>

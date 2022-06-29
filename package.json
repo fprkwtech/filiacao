@@ -20,6 +20,7 @@
     "@hookform/resolvers": "^2.8.10",
     "@prisma/client": "3.14.0",
     "@react-pdf/renderer": "^2.2.0",
+    "axios": "^0.27.2",
     "framer-motion": "^6",
     "html-pdf": "^2.2.0",
     "next": "12.1.6",
