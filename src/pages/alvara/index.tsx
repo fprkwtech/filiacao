@@ -1,3 +1,4 @@
+import { QRCode } from 'react-qrcode-logo';
 import { Box, Flex, Heading, Image, Text } from '@chakra-ui/react';
 export interface AlvaraProps {
   host: string;
@@ -7,9 +8,10 @@ export interface AlvaraProps {
   cidade: string;
   data: string;
   validade: string;
+  url: string;
 }
 
-const Alvara: React.FunctionComponent<AlvaraProps> = ({ host, nome, rg, estilos, cidade, data, validade }) => (
+const Alvara: React.FunctionComponent<AlvaraProps> = ({ host, nome, rg, estilos, cidade, data, validade, url }) => (
   <Box
     width="740px"
     height="460px"
@@ -59,7 +61,7 @@ const Alvara: React.FunctionComponent<AlvaraProps> = ({ host, nome, rg, estilos,
           </Box>
         </Flex>
         <Flex justifyContent="flex-end" alignItems="flex-end" width="150px">
-          <Image src={`http://${host}/www.png`} width="90px" alt="Landscape picture" />
+          <QRCode value={url} eyeRadius={0} size={110} />
         </Flex>
       </Flex>
     </Flex>

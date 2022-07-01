@@ -18,6 +18,7 @@ export default function handler(req: any, res: any) {
         cidade="Londrina"
         data="24 de junho de 2022"
         validade="1 ano"
+        url="https://google.com"
       />,
       options,
     )
