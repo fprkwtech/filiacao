@@ -9,7 +9,7 @@ export default function Emissao() {
 
   return (
     <Flex w="100%" justifyContent="center" h="100vh" alignItems="center">
-      <Button onClick={() => handleBadgeGeneration(6)}>Gerar Badge</Button>
+      <Button onClick={() => handleBadgeGeneration(1)}>Gerar Badge</Button>
     </Flex>
   );
 }
