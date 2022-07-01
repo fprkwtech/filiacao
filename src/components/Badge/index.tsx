@@ -11,7 +11,7 @@ interface BadgeProps {
 
 const Badge = ({ host = 'http://localhost:3000/logo.png', athlete }: BadgeProps) => (
   <Flex flexDir="column" w="520px" h="350px" background="linear-gradient(-20deg, rgb(1, 94, 164), white 100%)">
-    <FirstSection athlete={athlete} host={host} />
+    <FirstSection host={host} />
     <SecondSection athlete={athlete} />
   </Flex>
 );
