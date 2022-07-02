@@ -39,7 +39,7 @@ const categoryOptions: SelectOptionProps[] = [
 ];
 
 const FightStyles = () => {
-  const onSubmit = (data: FightStyleProps) => console.log(data);
+  const onSubmit = (data: FightStyleProps) => data;
 
   return (
     <Container maxWidth="container.lg">

@@ -3,8 +3,6 @@ import { useForm } from 'react-hook-form';
 import { Container, Divider, Flex, Text } from '@chakra-ui/react';
 import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient();
-
 import TextField from '~/components/Form/TextField';
 import Logo from '~/components/Logo';
 
@@ -48,40 +46,63 @@ export interface Props {
 }
 
 export async function getServerSideProps({ params }: { params: { athlete_id?: string } }) {
-  if (params.athlete_id && !isNaN(+params.athlete_id)) {
-    const athlete = await prisma.athlete.findFirst({
-      where: { id: +params.athlete_id },
-      include: { address: true, legalGuardian: true },
-    });
+  const prisma = new PrismaClient({
+    log: ['query', 'info', 'warn', 'error'],
+  });
 
-    if (athlete)
-      return {
-        props: {
-          athlete: {
-            athleteName: athlete?.name,
-            athleteRg: athlete?.rg,
-            athleteTaxId: athlete?.taxId,
-            athleteBirthDate: athlete?.birthDate.toLocaleDateString('pt-BR'),
-            athleteSex: athlete ? (athlete.sex === 'M' ? 'Masculino' : 'Feminino') : undefined,
-            athleteGuardianId: athlete?.legalGuardianId,
-            athleteAddresses: athlete?.address,
-          },
-          guardian: {
-            guardianName: athlete?.legalGuardian?.name,
-            guardianTaxId: athlete?.legalGuardian?.taxId,
-            guardianRg: athlete?.legalGuardian?.rg,
-            guardianBirthDate: athlete?.legalGuardian?.birthDate.toLocaleDateString('pt-BR'),
-            guardianRelationship: athlete?.legalGuardian?.relationship,
-            // TODO esperar os endereços do guardiao
-            guardianAddresses: null,
-          },
+  const athlete_id = Number(params.athlete_id);
+
+  if (!params.athlete_id || isNaN(athlete_id)) return { props: {} };
+  const athlete = await prisma.athlete.findUnique({
+    where: { id: athlete_id },
+    select: {
+      name: true,
+      rg: true,
+      taxId: true,
+      birthDate: true,
+      sex: true,
+      address: {
+        where: {
+          sourceId: athlete_id,
+          sourceType: 'Athlete',
         },
-      };
+        select: {
+          zipcode: true,
+          street: true,
+          number: true,
+          complement: true,
+          district: true,
+          city: true,
+          state: true,
+        },
+      },
+      legalGuardian: true,
+    },
+  });
 
-    return { props: {} };
-  }
+  if (!athlete) return { props: {} };
 
-  return { props: {} };
+  return {
+    props: {
+      athlete: {
+        athleteName: athlete?.name,
+        athleteRg: athlete?.rg,
+        athleteTaxId: athlete?.taxId,
+        athleteBirthDate: athlete?.birthDate.toLocaleDateString('pt-BR'),
+        athleteSex: athlete ? (athlete.sex === 'M' ? 'Masculino' : 'Feminino') : undefined,
+        athleteAddresses: athlete?.address,
+      },
+      guardian: {
+        guardianName: athlete?.legalGuardian?.name,
+        guardianTaxId: athlete?.legalGuardian?.taxId,
+        guardianRg: athlete?.legalGuardian?.rg,
+        guardianBirthDate: athlete?.legalGuardian?.birthDate.toLocaleDateString('pt-BR'),
+        guardianRelationship: athlete?.legalGuardian?.relationship,
+        // TODO esperar os endereços do guardiao
+        guardianAddresses: null,
+      },
+    },
+  };
 }
 
 const Athletes = ({ athlete, guardian }: Props) => {
@@ -90,7 +111,7 @@ const Athletes = ({ athlete, guardian }: Props) => {
   return (
     <Container maxWidth="container.lg">
       <Logo />
-      {athlete && guardian ? (
+      {athlete ? (
         <Flex direction="column" gap="4" bg="white" borderRadius="8">
           <Text textAlign="center" marginTop={'5px'} fontSize="2xl">
             Atleta
@@ -116,7 +137,7 @@ const Athletes = ({ athlete, guardian }: Props) => {
           </Flex>
           <Divider />
           <>
-            {athlete.athleteAddresses?.map((address) => {
+            {athlete.athleteAddresses?.map((address) => (
               <>
                 <Flex gap="4" padding="4">
                   <TextField control={control} label="CEP" name={'ZipCode'} isReadOnly={true} placeholder={address.zipcode} />
@@ -146,46 +167,56 @@ const Athletes = ({ athlete, guardian }: Props) => {
                   <TextField control={control} label="Estado" name={'State'} isReadOnly={true} placeholder={address.state} />
                 </Flex>
                 <Divider />
-              </>;
-            })}
+              </>
+            ))}
           </>
           <Text textAlign="center" marginTop={'5px'} fontSize="2xl">
             Guardião Legal
           </Text>
-          <Flex gap="4" padding="4">
-            <TextField
-              control={control}
-              label="Nome completo"
-              name="legalGuardianName"
-              isReadOnly={true}
-              placeholder={guardian.guardianName}
-            />
-            <TextField
-              control={control}
-              label="CPF"
-              name="legalGuardianTaxId"
-              isReadOnly={true}
-              placeholder={guardian.guardianTaxId}
-            />
-            <TextField control={control} label="RG" name="legalGuardianRg" isReadOnly={true} placeholder={guardian.guardianRg} />
-            <TextField
-              control={control}
-              label="Data de Nascimento"
-              name="legalGuardianBirthDate"
-              isReadOnly={true}
-              placeholder={guardian.guardianBirthDate}
-            />
-            <TextField
-              control={control}
-              label="Grau de parentesco"
-              name="legalGuardianRelationship"
-              isReadOnly={true}
-              placeholder={guardian.guardianRelationship}
-            />
-          </Flex>
+          {guardian ? (
+            <Flex gap="4" padding="4">
+              <TextField
+                control={control}
+                label="Nome completo"
+                name="legalGuardianName"
+                isReadOnly={true}
+                placeholder={guardian.guardianName}
+              />
+              <TextField
+                control={control}
+                label="CPF"
+                name="legalGuardianTaxId"
+                isReadOnly={true}
+                placeholder={guardian.guardianTaxId}
+              />
+              <TextField
+                control={control}
+                label="RG"
+                name="legalGuardianRg"
+                isReadOnly={true}
+                placeholder={guardian.guardianRg}
+              />
+              <TextField
+                control={control}
+                label="Data de Nascimento"
+                name="legalGuardianBirthDate"
+                isReadOnly={true}
+                placeholder={guardian.guardianBirthDate}
+              />
+              <TextField
+                control={control}
+                label="Grau de parentesco"
+                name="legalGuardianRelationship"
+                isReadOnly={true}
+                placeholder={guardian.guardianRelationship}
+              />
+            </Flex>
+          ) : (
+            <></>
+          )}
           <Divider />
           <>
-            {guardian.guardianAddresses?.map((address) => {
+            {guardian?.guardianAddresses?.map((address) => {
               <>
                 <Flex gap="4" padding="4">
                   <TextField control={control} label="CEP" name={'ZipCode'} isReadOnly={true} placeholder={address.zipcode} />

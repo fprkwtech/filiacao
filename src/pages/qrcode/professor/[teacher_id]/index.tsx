@@ -34,7 +34,7 @@ export interface Props {
 export async function getServerSideProps(query: { params: { teacher_id: string } }) {
   const teacher = await prisma.teacher.findFirst({
     where: { id: +query.params.teacher_id },
-    include: { address: true},
+    include: { address: true },
   });
 
   if (teacher)
@@ -78,7 +78,13 @@ const Teachers = ({ teacher }: Props) => {
             <TextField control={control} label="Codigo" name="teacherCode" isReadOnly={true} placeholder={teacher.teacherCode} />
             <TextField control={control} label="CPF" name="teacherTaxId" isReadOnly={true} placeholder={teacher.teacherTaxId} />
             <TextField control={control} label="RG" name="teacherRg" isReadOnly={true} placeholder={teacher.teacherRg} />
-            <TextField control={control} label="agência emissora" name="teacherIssuingAgency" isReadOnly={true} placeholder={teacher.teacherIssuingAgency} />
+            <TextField
+              control={control}
+              label="agência emissora"
+              name="teacherIssuingAgency"
+              isReadOnly={true}
+              placeholder={teacher.teacherIssuingAgency}
+            />
             <TextField
               control={control}
               label="Data de Nascimento"
