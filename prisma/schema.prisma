@@ -219,6 +219,8 @@ model ValidateHistory {
   school     School?               @relation("SchoolValidateHistory", fields: [sourceId], references: [id], map: "SchoolValidateHistory_sourceId_fkey")
   sourceId   Int
   sourceType ValidateHistorySource
+
+  @@unique([sourceId, sourceType], name: "unique_sourceId_sourceType")
 }
 
 enum DocumentSource {
