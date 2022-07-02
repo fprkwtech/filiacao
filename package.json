@@ -2,6 +2,7 @@
   "name": "topicos",
   "version": "0.1.0",
   "private": true,
+  "type":"module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -26,6 +27,9 @@
     "react-dom": "18.1.0",
     "react-hook-form": "^7.31.2",
     "yup": "^0.32.11"
+  },
+  "prisma": {
+    "seed": "ts-node --esm prisma/init-data.ts"
   },
   "devDependencies": {
     "@chakra-ui/cli": "^2.0.0",
