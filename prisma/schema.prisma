@@ -161,7 +161,7 @@ model Address {
   complement String?       @db.VarChar(255)
   district   String        @db.VarChar(255)
   city       String        @db.VarChar(255)
-  state      String        @db.VarChar(2)
+  state      UF
   createdAt  DateTime      @default(now())
   updatedAt  DateTime      @updatedAt
   sourceId   Int
@@ -231,9 +231,10 @@ enum DocumentSource {
 
 enum AddressSource {
   Athlete
+  Federation
+  LegalGuardian
   School
   Teacher
-  Federation
 }
 
 enum FightStyleRelationSource {
@@ -259,4 +260,34 @@ enum DocumentType {
 enum Sex {
   M
   F
+}
+
+enum UF {
+  AC
+  AL
+  AP
+  AM
+  BA
+  CE
+  DF
+  ES
+  GO
+  MA
+  MT
+  MS
+  MG
+  PA
+  PB
+  PR
+  PE
+  PI
+  RJ
+  RN
+  RS
+  RO
+  RR
+  SC
+  SP
+  SE
+  TO
 }

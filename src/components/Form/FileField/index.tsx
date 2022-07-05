@@ -18,7 +18,7 @@ const FileField: React.ComponentType<FileFieldProps> = ({ label, required, name,
     render={({ field, fieldState }) => (
       <FormControl isRequired={required} isInvalid={!!fieldState.error} {...props}>
         <FormLabel>{label}:</FormLabel>
-        <Input type="file" onBlur={onBlur ?? field.onBlur} variant="unstyled" />
+        <Input type="file" variant="unstyled" {...field} onBlur={onBlur ?? field.onBlur} />
         {fieldState.error && <FormErrorMessage>{fieldState.error.message}</FormErrorMessage>}
       </FormControl>
     )}
